@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy-950 text-slate-100 antialiased;
+  }
+}
+
+/* Glassmorphism custom styles */
+.glass-panel {
+  background: rgba(17, 26, 54, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-interactive {
+  background: rgba(17, 26, 54, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  background: rgba(27, 38, 79, 0.6);
+  border-color: rgba(255, 122, 0, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(255, 122, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Custom Scrollbar for Navy scrollable panels */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 17, 40, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 122, 0, 0.25);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 122, 0, 0.60);
+}
+
+/* Shimmer animation for card loaders */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(17,26,54,0.4) 25%, rgba(27,38,79,0.7) 50%, rgba(17,26,54,0.4) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Glowing text and points */
+.text-orange-glow {
+  text-shadow: 0 0 10px rgba(255, 122, 0, 0.5);
+}
+
+.glow-orange {
+  box-shadow: 0 0 15px rgba(255, 122, 0, 0.4);
+}
