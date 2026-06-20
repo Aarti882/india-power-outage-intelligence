@@ -1,4 +1,4 @@
-# India Power Outage Intelligence System ⚡
+# India Power Outage Intelligence System
 
 A production-grade, full-stack AI-powered data analytics and predictive forecasting system designed to study state-wise energy deficit patterns, detect grid anomalies, predict future outages, and answer natural language queries using Google Gemini API and LangChain.
 
@@ -6,7 +6,7 @@ This project features a decoupled architecture with a **Python FastAPI backend**
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 1. **Interactive Analytics Dashboard**:
    - Visualizes multi-year energy deficits and demand trends (2015–2024).
@@ -32,7 +32,7 @@ This project features a decoupled architecture with a **Python FastAPI backend**
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 India power outage/
@@ -71,7 +71,7 @@ India power outage/
 
 ---
 
-## ⚙️ REST API Endpoints (FastAPI)
+## REST API Endpoints (FastAPI)
 
 - `GET /api/data`: Returns full synthetic dataset records.
 - `GET /api/sevi`: Returns State Energy Vulnerability Index summaries per state.
@@ -82,7 +82,7 @@ India power outage/
 
 ---
 
-## 📈 Model Performance
+## Model Performance
 
 | Metric | Linear Regression | Random Forest Regressor (Recommended) |
 | :--- | :--- | :--- |
@@ -94,7 +94,7 @@ India power outage/
 
 ---
 
-## 🚀 Installation & Running
+## Installation & Running
 
 ### Prerequisites
 - Python 3.9+

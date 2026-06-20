@@ -7,6 +7,8 @@ import StateComparator from './pages/StateComparator';
 import Forecasting from './pages/Forecasting';
 import AIAgent from './pages/AIAgent';
 
+import { AlertCircle } from 'lucide-react';
+
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [data, setData] = useState([]);
@@ -36,7 +38,6 @@ function App() {
         const rawData = await dataRes.json();
         const seviJson = await seviRes.json();
         const anomaliesJson = await anomaliesRes.json();
-
         setData(rawData);
         setSeviData(seviJson);
         setAnomalies(anomaliesJson);
@@ -57,7 +58,7 @@ function App() {
       return (
         <div className="flex flex-col items-center justify-center h-full p-8 text-center space-y-4">
           <div className="bg-red-500/15 border border-red-500/35 p-4 rounded-full text-red-500">
-            <span className="text-4xl">⚠️</span>
+            <AlertCircle className="h-10 w-10 text-red-500" />
           </div>
           <h3 className="text-xl font-bold text-white">Backend Connection Offline</h3>
           <p className="text-sm text-slate-400 max-w-md leading-relaxed">

@@ -160,7 +160,7 @@ const AIAgent = () => {
         ...prev, 
         { 
           role: "assistant", 
-          content: `⚠️ **Error communicating with Gemini Agent**: ${err.message}. Please check that the backend is running and the GEMINI_API_KEY is configured on the server.` 
+          content: `**Error communicating with Gemini Agent**: ${err.message}. Please check that the backend is running and the GEMINI_API_KEY is configured on the server.` 
         }
       ]);
     } finally {

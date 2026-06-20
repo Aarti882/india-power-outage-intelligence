@@ -22,7 +22,7 @@ from src.config import SEVI_WEIGHTS, MODEL_DIR
 # Page Configuration
 st.set_page_config(
     page_title="India Power Outage Intelligence System",
-    page_icon="⚡",
+    page_icon=":zap:",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -200,19 +200,19 @@ except Exception as e:
 
 # Sidebar Navigation
 with st.sidebar:
-    st.markdown("### ⚡ India Power Intelligence")
+    st.markdown("### India Power Intelligence")
     st.markdown("An AI-powered data analytics agent and forecasting platform for national power outages and energy deficits.")
     
     st.write("---")
     
     app_mode = st.sidebar.radio(
         "Navigate",
-        ["📊 Deficit & Outage Dashboard", "🔮 Predictive Forecasting", "🤖 AI Analytics Agent"]
+        ["Deficit & Outage Dashboard", "Predictive Forecasting", "AI Analytics Agent"]
     )
     
     st.write("---")
     
-    st.markdown("### 🔑 API Authentication")
+    st.markdown("### API Authentication")
     gemini_key = st.text_input("Enter Gemini API Key", type="password", help="Required for the AI Analytics Agent tab")
     if gemini_key:
         os.environ["GEMINI_API_KEY"] = gemini_key
@@ -221,7 +221,7 @@ with st.sidebar:
         st.info("API key is required only for chatbot functionality. You can still use dashboard and forecasting.")
         
     st.write("---")
-    st.markdown("### 📘 SEVI Index Weights")
+    st.markdown("### SEVI Index Weights")
     st.caption("State Energy Vulnerability Index is computed using:")
     st.markdown(f"""
     - **Deficit % Weight**: `{SEVI_WEIGHTS['deficit_pct']:.1f}`
@@ -235,8 +235,8 @@ st.markdown("<div class='main-title'>India Power Outage Intelligence System</div
 st.markdown("<div class='subtitle'>State-wise energy deficit analytics, predictive modeling, and intelligent AI reasoning</div>", unsafe_allow_html=True)
 
 # ----------------- Tab 1: Dashboard -----------------
-if app_mode == "📊 Deficit & Outage Dashboard":
-    st.header("📊 National Power Grid Dashboard")
+if app_mode == "Deficit & Outage Dashboard":
+    st.header("National Power Grid Dashboard")
     
     # Filter Row
     col_f1, col_f2 = st.columns(2)
@@ -283,7 +283,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
         col_p1, col_p2 = st.columns([1.1, 1.0])
         
         with col_p1:
-            st.subheader("🗺️ India Grid Vulnerability Choropleth Map (SEVI)")
+            st.subheader("India Grid Vulnerability Choropleth Map (SEVI)")
             if geojson_data is None:
                 st.warning("GeoJSON map data not found in `data/india_states.geojson`. Map cannot be displayed.")
             else:
@@ -325,7 +325,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
                 st.plotly_chart(fig_map, use_container_width=True)
             
         with col_p2:
-            st.subheader("📈 State Energy Deficit Trend Over Time")
+            st.subheader("State Energy Deficit Trend Over Time")
             # State-wise deficit timeline (resampled yearly or monthly)
             timeline_df = filtered_df.groupby(['Date', 'State'])['Energy_Deficit_Percent'].mean().reset_index()
             # Multi-line plot for top 6 states by average deficit to keep it clean
@@ -359,7 +359,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
         col_p3, col_p4 = st.columns([1.0, 1.0])
         
         with col_p3:
-            st.subheader("🛡️ State-wise Average Energy Vulnerability Index (SEVI)")
+            st.subheader("State-wise Average Energy Vulnerability Index (SEVI)")
             state_summary = get_state_summary(filtered_df).sort_values(by='Avg_SEVI', ascending=False)
             
             fig_sevi = px.bar(
@@ -384,7 +384,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
             st.plotly_chart(fig_sevi, use_container_width=True)
             
         with col_p4:
-            st.subheader("🗺️ Regional Outage Frequency & Recovery Profile")
+            st.subheader("Regional Outage Frequency & Recovery Profile")
             reg_summary = filtered_df.groupby('Region').agg({
                 'Outage_Frequency': 'mean',
                 'Average_Recovery_Time_Hours': 'mean'
@@ -418,7 +418,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
         st.write("---")
         
         # Row 3: Seasonal Patterns
-        st.subheader("📆 Seasonal Patterns & Outage Peaks")
+        st.subheader("Seasonal Patterns & Outage Peaks")
         filtered_df['Month_Name'] = filtered_df['Date'].dt.strftime('%B')
         filtered_df['Month_Num'] = filtered_df['Date'].dt.month
         seasonal_df = filtered_df.groupby(['Month_Num', 'Month_Name']).agg({
@@ -455,7 +455,7 @@ if app_mode == "📊 Deficit & Outage Dashboard":
         st.plotly_chart(fig_season, use_container_width=True)
         
         # Row 4: Anomalies
-        st.subheader("🚨 Grid Anomaly Log")
+        st.subheader("Grid Anomaly Log")
         st.write("Anomalies are detected using a Z-score threshold (> 2.5) relative to each state's own historical average.")
         anomalies_df = filtered_df[filtered_df['Is_Anomaly'] == True].sort_values(by='Date', ascending=False)
         
@@ -473,8 +473,8 @@ if app_mode == "📊 Deficit & Outage Dashboard":
             )
 
 # ----------------- Tab 2: Forecasting -----------------
-elif app_mode == "🔮 Predictive Forecasting":
-    st.header("🔮 Energy Deficit Forecasting Model")
+elif app_mode == "Predictive Forecasting":
+    st.header("Energy Deficit Forecasting Model")
     st.markdown(
         "This section evaluates and utilizes machine learning models to forecast next month's energy deficit % "
         "using historical features (lags, rolling averages, state encoders)."
@@ -487,7 +487,7 @@ elif app_mode == "🔮 Predictive Forecasting":
         st.error("Model binaries not found! Please run the training script: `python -m src.modeling` in the terminal.")
     else:
         # Comparison Metrics
-        st.subheader("⚖️ Model Comparison: Linear Regression vs. Random Forest")
+        st.subheader("Model Comparison: Linear Regression vs. Random Forest")
         
         col_m1, col_m2 = st.columns(2)
         metrics = model_data['metrics']
@@ -534,7 +534,7 @@ elif app_mode == "🔮 Predictive Forecasting":
         st.write("---")
         
         # Inference Section
-        st.subheader("🔮 Predict Next Month Outage Risk")
+        st.subheader("Predict Next Month Outage Risk")
         col_inf1, col_inf2 = st.columns([1, 2])
         
         with col_inf1:
@@ -567,8 +567,8 @@ elif app_mode == "🔮 Predictive Forecasting":
                         st.error(f"Prediction failed: {e}")
 
 # ----------------- Tab 3: AI Agent -----------------
-elif app_mode == "🤖 AI Analytics Agent":
-    st.header("🤖 LangChain AI Analytics Agent")
+elif app_mode == "AI Analytics Agent":
+    st.header("LangChain AI Analytics Agent")
     st.markdown(
         "Ask our Google Gemini-powered AI agent natural language questions about India's power outages, "
         "deficit rankings, seasonal trends, and SEVI vulnerability metrics."
@@ -576,7 +576,7 @@ elif app_mode == "🤖 AI Analytics Agent":
     
     # Check for API Key
     if "GEMINI_API_KEY" not in os.environ or not os.environ["GEMINI_API_KEY"]:
-        st.warning("⚠️ Google Gemini API Key is missing. Please enter it in the sidebar to enable the AI agent.")
+        st.warning("Google Gemini API Key is missing. Please enter it in the sidebar to enable the AI agent.")
         st.info(
             "To get a Gemini API key, go to the Google AI Studio console. Once entered in the sidebar, "
             "you can query this dataset using natural language."
@@ -588,10 +588,10 @@ elif app_mode == "🤖 AI Analytics Agent":
         if agent_executor is None:
             st.error("Failed to initialize Gemini Agent. Please check if your API Key is valid.")
         else:
-            st.success("🤖 AI Agent is online and connected to the power outage dataset!")
+            st.success("AI Agent is online and connected to the power outage dataset!")
             
             # Sample Query Shortcuts
-            st.markdown("##### 💡 Try asking:")
+            st.markdown("##### Try asking:")
             shortcut_col1, shortcut_col2, shortcut_col3 = st.columns(3)
             
             # Setup session state for chat history

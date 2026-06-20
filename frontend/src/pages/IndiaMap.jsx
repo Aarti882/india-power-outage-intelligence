@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { scaleLinear } from 'd3-scale';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Info, Eye, Database, FileText } from 'lucide-react';
+import { MapPin, Info, Eye, Database, FileText, X } from 'lucide-react';
 import { generateStateReportCard } from '../utils/pdfGenerator';
 import SkeletonCard from '../components/SkeletonCard';
 
@@ -356,7 +356,7 @@ const IndiaMap = ({ data, seviData, loading }) => {
                 }}
                 className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-navy-800/60 transition-colors cursor-pointer"
               >
-                ✕
+                <X className="h-5 w-5" />
               </button>
 
               <div className="flex items-center gap-2 pb-3 border-b border-navy-700/40 mb-6">
