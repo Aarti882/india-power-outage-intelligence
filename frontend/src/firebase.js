@@ -10,12 +10,23 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
+let auth = null;
+let googleProvider = null;
+let isFirebaseConfigured = false;
 
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+// Only initialize if we have a valid non-empty apiKey
+if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined" && firebaseConfig.apiKey.trim() !== "") {
+  try {
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    isFirebaseConfigured = true;
+  } catch (err) {
+    console.error("Firebase initialization failed:", err);
+  }
+}
 
-// Always prompt for account selection during Google sign-in
-googleProvider.setCustomParameters({
-  prompt: 'select_account'
-});
+export { auth, googleProvider, isFirebaseConfigured };
