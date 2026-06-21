@@ -269,9 +269,9 @@ def run_agent_query(user_query: str, chat_history: list = None, image_data: str 
         return "Error: Google Gemini API Key is missing. Please configure GEMINI_API_KEY environment variable on the server."
         
     try:
-        # Initialize Gemini Chat model (using gemini-2.0-flash as it supports vision)
+        # Initialize Gemini Chat model (using gemini-2.5-flash-lite as it supports vision)
         llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash-lite",
             temperature=0.2,
             google_api_key=api_key
         )
