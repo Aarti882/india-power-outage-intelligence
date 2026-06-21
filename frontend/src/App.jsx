@@ -10,12 +10,13 @@ import Login from './pages/Login';
 
 import { auth, isFirebaseConfigured } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { AlertCircle, Zap } from 'lucide-react';
+import { AlertCircle, Zap, Menu } from 'lucide-react';
 import { API_BASE_URL } from './config';
 
 function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [data, setData] = useState([]);
   const [seviData, setSeviData] = useState([]);
@@ -77,6 +78,7 @@ function App() {
     try {
       await signOut(auth);
       setActiveTab('dashboard'); // Reset active tab on logout
+      setIsSidebarOpen(false);
     } catch (err) {
       console.error("Logout failed:", err);
     }
@@ -211,20 +213,64 @@ VITE_FIREBASE_APP_ID=1:your_app_id`}
     return <Login />;
   }
 
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setIsSidebarOpen(false); // Close sidebar on selection (mobile overlay)
+  };
+
   return (
-    <div className="flex h-screen w-screen bg-navy-950 text-slate-100 overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-screen w-screen bg-navy-950 text-slate-100 overflow-hidden relative">
       
+      {/* Top Header bar for Mobile and Tablet viewports */}
+      <header className="lg:hidden w-full h-16 bg-navy-900 border-b border-navy-700/50 flex items-center justify-between px-4 sm:px-6 shrink-0 z-30">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-navy-800/60 transition-colors cursor-pointer"
+            title="Open Menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="bg-gradient-to-tr from-orange-600 to-orange-400 p-1.5 rounded-lg shadow-orange-glow">
+              <Zap className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-bold text-sm bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent uppercase tracking-wider">
+              Power Intel
+            </span>
+          </div>
+        </div>
+        {user.photoURL && (
+          <img 
+            src={user.photoURL} 
+            alt={user.displayName || "User"} 
+            className="h-8 w-8 rounded-full border border-orange-500/30 object-cover"
+            referrerPolicy="no-referrer"
+          />
+        )}
+      </header>
+
+      {/* Dark overlay backdrop visible when Sidebar overlay is open */}
+      {isSidebarOpen && (
+        <div 
+          onClick={() => setIsSidebarOpen(false)} 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+        />
+      )}
+
       {/* Sidebar Navigation */}
       <Sidebar 
         user={user}
         onLogout={handleLogout}
         activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        anomalyCount={anomalies.length} 
+        setActiveTab={handleTabChange} 
+        anomalyCount={anomalies.length}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       {/* Main Viewport Content Panel */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden p-8 z-10 bg-gradient-to-tr from-navy-950 to-navy-900">
+      <main className="flex-1 flex flex-col h-full overflow-hidden p-4 sm:p-6 lg:p-8 z-10 bg-gradient-to-tr from-navy-950 to-navy-900 relative">
         
         {/* Glow backdrop ornaments */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>

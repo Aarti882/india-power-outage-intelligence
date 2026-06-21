@@ -8,10 +8,11 @@ import {
   Zap, 
   AlertTriangle,
   GitCompare,
-  LogOut
+  LogOut,
+  X
 } from 'lucide-react';
 
-const Sidebar = ({ user, onLogout, activeTab, setActiveTab, anomalyCount }) => {
+const Sidebar = ({ user, onLogout, activeTab, setActiveTab, anomalyCount, isOpen, onClose }) => {
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'analytics', name: 'Analytics Trends', icon: BarChart3 },
@@ -22,20 +23,34 @@ const Sidebar = ({ user, onLogout, activeTab, setActiveTab, anomalyCount }) => {
   ];
 
   return (
-    <aside className="w-64 bg-navy-900 border-r border-navy-700/50 flex flex-col h-full z-20">
+    <aside 
+      className={`w-64 bg-navy-900 border-r border-navy-700/50 flex flex-col h-full z-40 fixed inset-y-0 left-0 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
       {/* Brand Header */}
-      <div className="p-6 border-b border-navy-700/40 flex items-center gap-3">
-        <div className="bg-gradient-to-tr from-orange-600 to-orange-400 p-2.5 rounded-xl shadow-orange-glow">
-          <Zap className="h-6 w-6 text-white animate-pulse" />
+      <div className="p-6 border-b border-navy-700/40 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="bg-gradient-to-tr from-orange-600 to-orange-400 p-2.5 rounded-xl shadow-orange-glow">
+            <Zap className="h-6 w-6 text-white animate-pulse" />
+          </div>
+          <div>
+            <h1 className="font-bold text-lg leading-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+              Power Outage
+            </h1>
+            <p className="text-xs text-orange-500 font-semibold tracking-wider uppercase">
+              Intelligence
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="font-bold text-lg leading-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-            Power Outage
-          </h1>
-          <p className="text-xs text-orange-500 font-semibold tracking-wider uppercase">
-            Intelligence
-          </p>
-        </div>
+        {/* Close button on mobile/tablet viewports */}
+        <button
+          onClick={onClose}
+          className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-navy-800 transition-colors cursor-pointer"
+          title="Close Menu"
+        >
+          <X className="h-5 w-5" />
+        </button>
       </div>
 
       {/* Navigation Links */}

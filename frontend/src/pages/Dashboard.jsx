@@ -218,7 +218,6 @@ const Dashboard = ({ data, seviData, loading }) => {
   // Get historical trend of selected state
   const selectedStateTrend = useMemo(() => {
     if (!data) return [];
-    // Filter last 24 months for readability
     return data
       .filter(row => row.State.toLowerCase() === selectedState.toLowerCase())
       .sort((a, b) => new Date(a.Date) - new Date(b.Date))
@@ -244,12 +243,12 @@ const Dashboard = ({ data, seviData, loading }) => {
 
   if (loading) {
     return (
-      <div className="space-y-8 pb-12 overflow-y-auto max-h-[calc(100vh-2rem)] pr-2">
+      <div className="space-y-6 pb-12 overflow-y-auto h-full pr-1">
         {/* Header Skeleton */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-navy-700/30 pb-6 animate-pulse">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-navy-700/30 pb-6 animate-pulse">
           <div className="space-y-2">
             <div className="h-7 bg-navy-700/60 rounded-lg w-64"></div>
-            <div className="h-4 bg-navy-700/40 rounded-full w-96"></div>
+            <div className="h-4 bg-navy-700/40 rounded-full w-72 sm:w-96"></div>
           </div>
           <div className="flex items-center gap-3">
             <div className="h-10 w-28 bg-navy-700/60 rounded-xl"></div>
@@ -258,7 +257,7 @@ const Dashboard = ({ data, seviData, loading }) => {
         </div>
 
         {/* Metric Cards Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <SkeletonCard type="metric" />
           <SkeletonCard type="metric" />
           <SkeletonCard type="metric" />
@@ -281,7 +280,7 @@ const Dashboard = ({ data, seviData, loading }) => {
   }
 
   return (
-    <div className="space-y-8 pb-12 overflow-y-auto max-h-[calc(100vh-2rem)] pr-2">
+    <div className="space-y-6 pb-12 overflow-y-auto h-full pr-1 text-slate-100">
       {/* Anomaly Pulsing alert banner */}
       <AnimatePresence>
         {showAlert && highRiskStates.length > 0 && (
@@ -289,19 +288,19 @@ const Dashboard = ({ data, seviData, loading }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 flex items-center justify-between gap-4 relative overflow-hidden"
+            className="bg-red-500/10 border border-red-500/30 rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden"
             style={{ boxShadow: '0 4px 20px rgba(239, 68, 68, 0.15)' }}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-start sm:items-center gap-3">
               <motion.div 
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
-                className="h-3.5 w-3.5 rounded-full bg-red-500 flex items-center justify-center shrink-0"
+                className="h-3.5 w-3.5 rounded-full bg-red-500 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping"></span>
               </motion.div>
               <div className="text-xs sm:text-sm">
-                <span className="font-extrabold text-red-500 uppercase tracking-wider mr-2">HIGH RISK CRITICAL ALERT:</span>
+                <span className="font-extrabold text-red-500 uppercase tracking-wider mr-2">CRITICAL ALERT:</span>
                 <span className="text-slate-200">
                   States with SEVI scores exceeding 40: <strong className="text-white">{highRiskStates.join(", ")}</strong>.
                   {anomalies.length > 0 && ` Active anomalies detected: ${anomalies.length} grid events.`}
@@ -310,7 +309,7 @@ const Dashboard = ({ data, seviData, loading }) => {
             </div>
             <button 
               onClick={() => setShowAlert(false)}
-              className="p-1 px-2.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-white transition-colors text-xs font-bold font-mono cursor-pointer"
+              className="self-end sm:self-auto p-1 px-2.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-white transition-colors text-xs font-bold font-mono cursor-pointer"
             >
               Dismiss
             </button>
@@ -319,31 +318,31 @@ const Dashboard = ({ data, seviData, loading }) => {
       </AnimatePresence>
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-navy-700/30 pb-6">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-navy-700/30 pb-4 sm:pb-6">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
             Grid Intelligence Dashboard
           </h2>
-          <p className="text-slate-400 mt-1.5 text-sm">
+          <p className="text-slate-400 mt-1.5 text-xs sm:text-sm">
             Real-time power supply deficits, outages, and vulnerability metrics across Indian states.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <button
             onClick={exportPDFReport}
             disabled={isExporting}
-            className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 text-white font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FileText className="h-4 w-4" />
             <span>{isExporting ? 'Generating Report...' : 'Export Report'}</span>
           </button>
-          <div className="flex items-center gap-2.5 bg-navy-800/40 border border-navy-700/50 px-4 py-2.5 rounded-xl text-xs text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <div className="flex items-center gap-2 bg-navy-800/40 border border-navy-700/50 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs text-slate-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="font-mono font-bold text-white tracking-wide">{time.toLocaleTimeString()}</span>
           </div>
-          <div className="flex items-center gap-3 bg-navy-800/40 border border-navy-700/50 px-4 py-2.5 rounded-xl text-xs text-slate-300">
+          <div className="flex items-center gap-2 bg-navy-800/40 border border-navy-700/50 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs text-slate-300">
             <Calendar className="h-4 w-4 text-orange-500" />
-            <span>Data Horizon: 2015 – 2024</span>
+            <span>Data: 2015 – 2024</span>
           </div>
         </div>
       </div>
@@ -354,17 +353,17 @@ const Dashboard = ({ data, seviData, loading }) => {
       {/* Main Grid: Custom Gauge & Trend Line */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: State Vulnerability Gauge */}
-        <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-orange-500" />
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
                 <span>State Index Explorer</span>
               </h3>
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="bg-navy-900 border border-navy-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500/60 font-semibold"
+                className="bg-navy-900 border border-navy-700/60 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500/60 font-semibold"
               >
                 {statesList.map(st => (
                   <option key={st} value={st}>{st}</option>
@@ -382,11 +381,11 @@ const Dashboard = ({ data, seviData, loading }) => {
         </div>
 
         {/* Right Columns: Deficit Trend Area Chart */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl">
+        <div className="lg:col-span-2 glass-panel p-4 sm:p-6 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Zap className="h-5 w-5 text-orange-500" />
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
                 <span>Energy Deficit Trend — {selectedState}</span>
               </h3>
               <p className="text-xs text-slate-400 mt-1">
@@ -433,8 +432,8 @@ const Dashboard = ({ data, seviData, loading }) => {
       {/* Bottom Grid: Top Outage States & Recent Anomalies Banner */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Top 5 Outage States Bar Chart */}
-        <div className="lg:col-span-3 glass-panel p-6 rounded-2xl">
-          <h3 className="text-lg font-bold text-white mb-2">
+        <div className="lg:col-span-3 glass-panel p-4 sm:p-6 rounded-2xl">
+          <h3 className="text-base sm:text-lg font-bold text-white mb-2">
             Top Outage-Prone States
           </h3>
           <p className="text-xs text-slate-400 mb-6">
@@ -470,13 +469,13 @@ const Dashboard = ({ data, seviData, loading }) => {
         </div>
 
         {/* Vulnerability System Callout */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+        <div className="lg:col-span-2 glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
           <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
           <div>
             <div className="bg-orange-500/15 border border-orange-500/30 p-3 rounded-xl inline-block mb-4">
-              <AlertCircle className="h-6 w-6 text-orange-500" />
+              <AlertCircle className="h-5 w-5 text-orange-500" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">SEVI Vulnerability Formula</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white mb-2">SEVI Vulnerability Formula</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               The State Energy Vulnerability Index is a weighted metric normalising multiple risks:
             </p>
