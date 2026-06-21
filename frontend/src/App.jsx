@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import { auth, isFirebaseConfigured } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { AlertCircle, Zap } from 'lucide-react';
+import { API_BASE_URL } from './config';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,13 +45,13 @@ function App() {
         
         // Parallel fetching
         const [dataRes, seviRes, anomaliesRes] = await Promise.all([
-          fetch('/api/data'),
-          fetch('/api/sevi'),
-          fetch('/api/anomalies')
+          fetch(`${API_BASE_URL}/api/data`),
+          fetch(`${API_BASE_URL}/api/sevi`),
+          fetch(`${API_BASE_URL}/api/anomalies`)
         ]);
 
         if (!dataRes.ok || !seviRes.ok || !anomaliesRes.ok) {
-          throw new Error("One or more backend API calls failed. Make sure the FastAPI server is running on localhost:8000.");
+          throw new Error(`One or more backend API calls failed. Make sure the FastAPI server is running at ${API_BASE_URL}.`);
         }
 
         const rawData = await dataRes.json();

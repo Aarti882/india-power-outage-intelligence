@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { LineChart, BarChart3, HelpCircle, Calendar, Sparkles, TrendingUp, AlertTriangle } from 'lucide-react';
 import SkeletonCard from '../components/SkeletonCard';
+import { API_BASE_URL } from '../config';
 
 const Forecasting = ({ data, seviData, loading: dataLoading }) => {
   const [selectedState, setSelectedState] = useState("Uttar Pradesh");
@@ -31,7 +32,7 @@ const Forecasting = ({ data, seviData, loading: dataLoading }) => {
 
   // Fetch general model metrics
   useEffect(() => {
-    fetch("/api/forecast")
+    fetch(`${API_BASE_URL}/api/forecast`)
       .then(res => {
         if (!res.ok) throw new Error("Failed to fetch model metrics");
         return res.json();
@@ -50,7 +51,7 @@ const Forecasting = ({ data, seviData, loading: dataLoading }) => {
   const fetchPrediction = () => {
     setLoadingPrediction(true);
     setPredictionError("");
-    fetch("/api/forecast", {
+    fetch(`${API_BASE_URL}/api/forecast`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

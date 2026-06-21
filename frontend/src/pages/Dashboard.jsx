@@ -18,6 +18,7 @@ import html2canvas from 'html2canvas';
 import MetricCards from '../components/MetricCards';
 import CustomGauge from '../components/CustomGauge';
 import SkeletonCard from '../components/SkeletonCard';
+import { API_BASE_URL } from '../config';
 
 const Dashboard = ({ data, seviData, loading }) => {
   const [selectedState, setSelectedState] = useState("Uttar Pradesh");
@@ -34,7 +35,7 @@ const Dashboard = ({ data, seviData, loading }) => {
   useEffect(() => {
     const fetchAnomalies = async () => {
       try {
-        const res = await fetch('/api/anomalies');
+        const res = await fetch(`${API_BASE_URL}/api/anomalies`);
         if (res.ok) {
           const data = await res.json();
           setAnomalies(data);

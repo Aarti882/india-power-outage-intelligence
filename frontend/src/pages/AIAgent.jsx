@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, Trash2, ShieldAlert, Sparkles, Terminal, Cpu, Paperclip, FileText, Image, X } from 'lucide-react';
 import Papa from 'papaparse';
+import { API_BASE_URL } from '../config';
 
 const AIAgent = () => {
   const [messages, setMessages] = useState([
@@ -137,7 +138,7 @@ const AIAgent = () => {
     ]);
 
     try {
-      const response = await fetch("/api/agent", {
+      const response = await fetch(`${API_BASE_URL}/api/agent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
