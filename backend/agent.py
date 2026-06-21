@@ -224,7 +224,15 @@ class CustomAgentExecutor:
             try:
                 response = self.llm.invoke(messages)
             except Exception as e:
-                return f"Agent error during LLM invocation: {e}"
+                err_msg = str(e)
+                if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
+                    return (
+                        "**Google Gemini API Quota Exceeded (429 Rate Limit)**:\n\n"
+                        "You have exceeded your per-minute or daily API request limit for the free tier of the Gemini API. "
+                        "Please wait about 60 seconds and try your request again.\n\n"
+                        "*Tip: If you require higher limits, you can link a billing account to your project in Google AI Studio.*"
+                    )
+                return f"Agent error during LLM invocation: {err_msg}"
                 
             messages.append(response)
             
@@ -270,4 +278,12 @@ def run_agent_query(user_query: str, chat_history: list = None, image_data: str 
         executor = CustomAgentExecutor(llm, TOOLS)
         return executor.invoke(user_query, chat_history, image_data)
     except Exception as e:
-        return f"Failed to run agent query: {e}"
+        err_msg = str(e)
+        if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
+            return (
+                "**Google Gemini API Quota Exceeded (429 Rate Limit)**:\n\n"
+                "You have exceeded your per-minute or daily API request limit for the free tier of the Gemini API. "
+                "Please wait about 60 seconds and try your request again.\n\n"
+                "*Tip: If you require higher limits, you can link a billing account to your project in Google AI Studio.*"
+            )
+        return f"Failed to run agent query: {err_msg}"
