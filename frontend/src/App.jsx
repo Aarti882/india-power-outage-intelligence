@@ -6,16 +6,30 @@ import IndiaMap from './pages/IndiaMap';
 import StateComparator from './pages/StateComparator';
 import Forecasting from './pages/Forecasting';
 import AIAgent from './pages/AIAgent';
+import Login from './pages/Login';
 
-import { AlertCircle } from 'lucide-react';
+import { auth } from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { AlertCircle, Zap } from 'lucide-react';
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [data, setData] = useState([]);
   const [seviData, setSeviData] = useState([]);
   const [anomalies, setAnomalies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Monitor Firebase Authentication state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Fetch all core datasets from FastAPI backend on mount
   useEffect(() => {
@@ -49,8 +63,19 @@ function App() {
       }
     };
 
-    fetchAllData();
-  }, []);
+    if (user) {
+      fetchAllData();
+    }
+  }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setActiveTab('dashboard'); // Reset active tab on logout
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   // Main Page Router switch
   const renderContent = () => {
@@ -92,11 +117,35 @@ function App() {
     }
   };
 
+  // Render initialization loading screen
+  if (authLoading) {
+    return (
+      <div className="h-screen w-screen bg-navy-950 flex flex-col items-center justify-center space-y-4">
+        <div className="relative flex items-center justify-center">
+          <div className="absolute h-16 w-16 rounded-full border-2 border-orange-500/30 animate-ping"></div>
+          <div className="bg-navy-900 border border-navy-700/60 p-4 rounded-full text-orange-500 shadow-orange-glow relative">
+            <Zap className="h-7 w-7 text-orange-500 animate-pulse" />
+          </div>
+        </div>
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest animate-pulse mt-2">
+          Initializing Engine...
+        </p>
+      </div>
+    );
+  }
+
+  // Route Guard: Unauthenticated users are shown the Login screen
+  if (!user) {
+    return <Login />;
+  }
+
   return (
     <div className="flex h-screen w-screen bg-navy-950 text-slate-100 overflow-hidden">
       
       {/* Sidebar Navigation */}
       <Sidebar 
+        user={user}
+        onLogout={handleLogout}
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         anomalyCount={anomalies.length} 

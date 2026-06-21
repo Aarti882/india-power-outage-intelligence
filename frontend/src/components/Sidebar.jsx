@@ -7,10 +7,11 @@ import {
   Bot, 
   Zap, 
   AlertTriangle,
-  GitCompare
+  GitCompare,
+  LogOut
 } from 'lucide-react';
 
-const Sidebar = ({ activeTab, setActiveTab, anomalyCount }) => {
+const Sidebar = ({ user, onLogout, activeTab, setActiveTab, anomalyCount }) => {
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'analytics', name: 'Analytics Trends', icon: BarChart3 },
@@ -70,13 +71,48 @@ const Sidebar = ({ activeTab, setActiveTab, anomalyCount }) => {
         })}
       </nav>
 
-      {/* System Status Footer */}
-      <div className="p-4 border-t border-navy-700/40 bg-navy-950/40 m-4 rounded-2xl">
-        <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
-          <span className="text-xs font-medium text-slate-400">System Connected</span>
+      {/* User Profile Card */}
+      {user && (
+        <div className="p-3 border-t border-navy-700/40 bg-navy-950/30 mx-4 mb-2 rounded-2xl flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            {user.photoURL ? (
+              <img 
+                src={user.photoURL} 
+                alt={user.displayName || "User"} 
+                className="h-8 w-8 rounded-full border border-orange-500/20 object-cover shrink-0"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-orange-500/15 border border-orange-500/25 flex items-center justify-center text-orange-500 font-bold text-xs shrink-0">
+                {(user.displayName || user.email || "U").charAt(0).toUpperCase()}
+              </div>
+            )}
+            <div className="truncate">
+              <p className="text-[11px] font-bold text-white truncate leading-tight">
+                {user.displayName || 'Google User'}
+              </p>
+              <p className="text-[9px] text-slate-500 truncate mt-0.5 leading-none">
+                {user.email}
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={onLogout}
+            title="Sign Out"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-orange-500 hover:bg-navy-800/60 transition-colors cursor-pointer shrink-0"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
-        <p className="text-[10px] text-slate-500 mt-1">FastAPI Engine v0.1.0</p>
+      )}
+
+      {/* System Status Footer */}
+      <div className="p-3 border-t border-navy-700/40 bg-navy-950/40 mx-4 mb-4 rounded-2xl">
+        <div className="flex items-center gap-2.5">
+          <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
+          <span className="text-[10px] font-semibold text-slate-400">System Connected</span>
+        </div>
+        <p className="text-[9px] text-slate-600 mt-1">FastAPI Engine v0.1.0</p>
       </div>
     </aside>
   );
