@@ -4,8 +4,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 
-from backend.data_generator import get_or_create_dataset
-from backend.models import (
+from data_generator import get_or_create_dataset
+from models import (
     DataRecord,
     SEVIResponse,
     AnomalyRecord,
@@ -19,7 +19,7 @@ from backend.models import (
     run_forecast_prediction,
     MODEL_PATH
 )
-from backend.agent import run_agent_query
+from agent import run_agent_query
 
 app = FastAPI(title="India Power Outage Intelligence System API")
 

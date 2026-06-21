@@ -4,8 +4,8 @@ import numpy as np
 from langchain_core.tools import tool
 from langchain_core.messages import ToolMessage, HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
-from backend.data_generator import get_or_create_dataset
-from backend.models import run_forecast_prediction
+from data_generator import get_or_create_dataset
+from models import run_forecast_prediction
 
 # Helper function to get processed data
 def get_dataset_for_agent():
